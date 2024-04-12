@@ -20,11 +20,9 @@ const Character = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `https://rickandmortyapi.com/api/character/?name=${pesquisa}`,
+        'https://rickandmortyapi.com/api/character',
       );
       setCharacters(response.data.results);
-      console.log('Response.data')
-      console.log(response.data)
     };
 
     fetchData();
@@ -47,19 +45,13 @@ const Character = () => {
       //   const pesquisarTermo = pesquisa.toLowerCase();
       const filtrado = characters.filter(character => {
         // return character.name.toLowerCase().includes(pesquisarTermo);
-        return character.name.includes();
+        return character.name.includes(pesquisarTermo);
       });
       setPersonagens(filtrado);
     };
 
     filtrarPersonagens();
   }, [characters, pesquisa]);
-
-  useEffect(() => {
-    const filteredCharacters = personagens.map(character => character); // Clone to avoid mutations
-    setCharacters(filteredCharacters);
-  }, []);
-  
 
   const adicionarPersonagem = async () => {
     if (!personagens.length) {
@@ -81,7 +73,6 @@ const Character = () => {
       JSON.stringify(atualizarPersonagens),
     );
     setPersonagens([novosPersonagens]);
-    console.log(setPersonagens)
     setPesquisa('');
   };
 
@@ -99,17 +90,7 @@ const Character = () => {
     setPersonagens(atualizarPersonagens);
   };
 
-  const renderItem = ({item}) => {
-    const filteredCharacters = personagens.filter(character => character.id === item.id);
-
-    if (!filteredCharacters.length) {
-      // Nenhum personagem correspondente encontrado no localStorage, retornar visualização vazia
-      return <View />;
-    }
-
-    const character = filteredCharacters[0]; // Assumindo que há apenas uma correspondência por ID
-
-    return(
+  const renderItem = ({item}) => (
     <View
       style={{
         flex: 1,
@@ -174,7 +155,7 @@ const Character = () => {
         </TouchableOpacity>
       </View>
     </View>
-  )};
+  );
 
   return (
     <View
